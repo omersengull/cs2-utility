@@ -93,8 +93,8 @@ const lineupData = {
                 "from": "CT",
                 "tech": "Sol Tık (Düz)",
                 "images": [
-                    "mirage/ct/siteflashfromct",
-                    "mirage/ct/siteflashfromct2"
+                    "mirage/ct/siteflashfromct.webp",
+                    "mirage/ct/siteflashfromct2.webp"
                 ]
             }
            
