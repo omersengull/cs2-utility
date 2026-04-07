@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="CS2 Utility Guide - Hafif, Hızlı ve Modern Bomba Rehberi">
+    <title>CS2 Utility Guide | Haritalar</title>
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">CS2<span>Utility</span></div>
+            <nav class="nav">
+                <a href="index.html" class="active">Haritalar</a>
+                <a href="#">Hakkında</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <section class="hero">
+            <h1>Harita Seçimi</h1>
+            <p>Lineup'ları görmek istediğiniz haritayı seçerek başlayın.</p>
+        </section>
+
+        <!-- Harita Grid Yapısı -->
+        <section class="map-grid">
+            <a href="mirage.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: Kendi resminizi proje klasörüne atın, ardından aşağıdaki src="" kısmını silip örneğin src="mirage-kapak.jpg" yazın -->
+                <img src="mirage.webp" alt="Mirage" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Mirage</h2>
+                </div>
+            </a>
+            <a href="inferno.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: Kendi resminizi proje klasörüne atın, ardından aşağıdaki src="" kısmını silip örneğin src="inferno-kapak.jpg" yazın -->
+                <img src="inferno.webp" alt="Inferno" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Inferno</h2>
+                </div>
+            </a>
+            <a href="dust2.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: Kendi resminizi proje klasörüne atın, ardından aşağıdaki src="" kısmını silip örneğin src="dust2-kapak.jpg" yazın -->
+                <img src="d2.webp" alt="Dust 2" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Dust 2</h2>
+                </div>
+            </a>
+            <a href="nuke.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: src="nuke-kapak.jpg" yapın -->
+                <img src="nuke.webp" alt="Nuke" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Nuke</h2>
+                </div>
+            </a>
+            <a href="ancient.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: src="ancient-kapak.jpg" yapın -->
+                <img src="ancient.webp" alt="Ancient" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Ancient</h2>
+                </div>
+            </a>
+            <a href="anubis.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: src="anubis-kapak.jpg" yapın -->
+                <img src="anubis.webp" alt="Anubis" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Anubis</h2>
+                </div>
+            </a>
+            <a href="overpass.html" class="map-card">
+                <!-- RESİM NASIL DEĞİŞTİRİLİR: src="overpass-kapak.jpg" yapın -->
+                <img src="overpass.webp" alt="Overpass" loading="lazy" class="map-bg">
+                <div class="map-content">
+                    <h2>Overpass</h2>
+                </div>
+            </a>
+        </section>
+
+       
+    </main>
+
+    <!-- Lightbox (Tam Ekran Görünüm) -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Büyük Görsel" onclick="toggleZoom(event)">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <!-- Hafif JavaScript (Sıfır kütüphane, sadece etkileşim için) -->
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCap = document.getElementById('lightbox-caption');
+
+        // Sayfadaki tüm resimlere tıklama dinleyicisi ekle
+        document.querySelectorAll('.image-wrapper img').forEach(img => {
+            img.onclick = () => {
+                lightboxImg.src = img.src;
+                lightboxImg.classList.remove('zoomed');
+                lightboxCap.innerText = img.alt;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Kaydırmayı durdur
+            };
+        });
+
+        function closeLightbox(e) {
+            // Eğer resme tıklamadıysa veya çarpıya tıkladıysa kapat
+            if (e.target.id === 'lightbox' || e.target.className === 'lightbox-close') {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function toggleZoom(e) {
+            e.stopPropagation(); // Lightbox kapatma olayını tetikleme
+            lightboxImg.classList.toggle('zoomed');
+        }
+
+        // ESC tuşu ile kapatma
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+</body>
+</html>

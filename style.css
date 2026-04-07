@@ -1,0 +1,405 @@
+/* === Değişkenler & Koyu Tema === */
+:root {
+    --bg-dark: #121212;
+    --bg-card: #1E1E1E;
+    --bg-hover: #2A2A2A;
+    --primary: #E58D27; /* CS2 Turuncusu */
+    --primary-hover: #F29E3A;
+    --text-main: #FFFFFF;
+    --text-muted: #A0A0A0;
+    
+    /* Utility Renk Kodları */
+    --smoke-color: #A3B1C6;
+    --flash-color: #FFF9D2;
+    --molly-color: #FF5A36;
+    --he-color: #4CAF50;
+    
+    --transition-speed: 0.35s;
+    --border-radius: 12px;
+}
+
+/* === Temel Sıfırlamalar (Reset) === */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+}
+
+/* === Header / Navbar === */
+.header {
+    background-color: rgba(18, 18, 18, 0.85); /* Hafif transparan */
+    backdrop-filter: blur(12px); /* Cam efekti (Glassmorphism) */
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 70px;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-main);
+}
+
+.logo span {
+    color: var(--primary);
+}
+
+.nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: color var(--transition-speed);
+}
+
+.nav a:hover, .nav a.active {
+    color: var(--primary);
+}
+
+/* === Hero Bölümü === */
+.hero {
+    text-align: center;
+    padding: 4rem 0 3rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    letter-spacing: -1px;
+}
+
+.hero p {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* === Harita Kartları (Grid) === */
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 5rem;
+}
+
+.map-card {
+    position: relative;
+    height: 220px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    display: block;
+    text-decoration: none;
+    background-color: var(--bg-card);
+    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Karanlık Gradient Efekti (Görsellerin üstüne yazının okunması için) */
+.map-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(18, 18, 18, 0.95) 0%, rgba(18, 18, 18, 0.2) 60%, transparent 100%);
+    z-index: 1;
+}
+
+.map-bg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.map-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    border-color: rgba(229, 141, 39, 0.3); /* Turuncu hafif çerçeve */
+}
+
+.map-card:hover .map-bg {
+    transform: scale(1.08); /* Hover'da resim hafif büyür */
+}
+
+.map-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 1.5rem;
+    z-index: 2;
+    width: 100%;
+}
+
+.map-content h2 {
+    color: var(--text-main);
+    font-size: 1.5rem;
+    font-weight: 800;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+/* === Lineup Kartları (Tasarım Önizlemesi) === */
+.section-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lineup-preview {
+    margin-bottom: 5rem;
+}
+
+.lineup-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+}
+
+.lineup-card {
+    background-color: var(--bg-card);
+    border-radius: var(--border-radius);
+    padding: 1.25rem 1.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all var(--transition-speed);
+}
+
+.lineup-card:hover {
+    border-color: var(--primary);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Sayfa yapısı detay/summary */
+details.lineup-card[open] summary ~ * {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0%    { opacity: 0; transform: translateY(-10px); }
+    100%  { opacity: 1; transform: translateY(0); }
+}
+
+.lineup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    list-style: none; /* Varsayılan ok işaretini kaldırır */
+}
+
+/* Safari için varsayılan oku gizle */
+.lineup-header::-webkit-details-marker {
+    display: none;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.toggle-icon {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    transition: transform var(--transition-speed);
+}
+
+/* Kart açıkken oku döndür */
+details.lineup-card[open] .toggle-icon {
+    transform: rotate(180deg);
+}
+
+/* Rozet (Badge) Stilleri */
+.utility-type {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    letter-spacing: 0.5px;
+    border: 1px solid transparent; /* Varsayılan şeffaf kenarlık */
+}
+
+.utility-type.smoke { 
+    background-color: rgba(163, 177, 198, 0.1); 
+    border-color: rgba(163, 177, 198, 0.3); 
+    color: var(--smoke-color); 
+}
+.utility-type.flash { 
+    background-color: rgba(255, 249, 210, 0.1); 
+    border-color: rgba(255, 249, 210, 0.3); 
+    color: var(--flash-color); 
+}
+.utility-type.molotov, .utility-type.molly { 
+    background-color: rgba(255, 90, 54, 0.1); 
+    border-color: rgba(255, 90, 54, 0.3); 
+    color: var(--molly-color); 
+}
+.utility-type.he { 
+    background-color: rgba(76, 175, 80, 0.1); 
+    border-color: rgba(76, 175, 80, 0.3); 
+    color: var(--he-color); 
+}
+
+.lineup-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.lineup-content {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lineup-details {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.lineup-details p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.lineup-details strong {
+    color: var(--text-main);
+    font-weight: 600;
+}
+
+/* Görseller - Esnek Grid */
+.lineup-images {
+    display: grid;
+    /* Resim sayısına göre otomatik sığar, en az 180px genişlik */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.image-wrapper {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #111;
+    aspect-ratio: 16/9;
+    cursor: zoom-in; /* Tıklanabilir olduğunu belli eder */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: border-color var(--transition-speed);
+}
+
+.image-wrapper:hover {
+    border-color: var(--primary);
+}
+
+.image-wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.image-wrapper:hover img {
+    transform: scale(1.05);
+}
+
+/* Lightbox (Tam Ekran Resim) Yapısı */
+.lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    display: none; /* JS ile açılacak */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    flex-direction: column;
+}
+
+.lightbox.active {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 85%;
+    object-fit: contain;
+    border-radius: 4px;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    cursor: zoom-out;
+    transition: transform 0.3s ease;
+}
+
+/* Basit Zoom Özelliği */
+.lightbox img.zoomed {
+    transform: scale(1.5);
+    cursor: grab;
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    font-weight: bold;
+    user-select: none;
+}
+
+.lightbox-caption {
+    color: var(--text-main);
+    margin-top: 1rem;
+    font-weight: 600;
+}
+
+.image-label {
+    position: absolute;
+    bottom: 0.5rem;
+    left: 0.5rem;
+    background-color: rgba(0,0,0,0.8);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: white;
+}
+
+/* === Responsive (Telefonlar İçin) === */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 2rem; }
+    .nav { gap: 1rem; }
+    .map-grid { grid-template-columns: 1fr; }
+    .lineup-grid { grid-template-columns: 1fr; }
+    .lineup-images { flex-direction: column; }
+}

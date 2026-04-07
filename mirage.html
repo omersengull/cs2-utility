@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Utility Guide | MIRAGE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- ANA TAKTİK LİSTESİ (Burayı düzenleyeceksin) -->
+    <script src="lineups.js"></script>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <div class="logo">CS2<span>Utility</span></div>
+            <nav class="nav">
+                <a href="index.html">← Haritalara Dön</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero" style="padding-bottom: 2rem;">
+            <h1 style="color: var(--primary);">MIRAGE</h1>
+            <p>CT ve T taktikleri.</p>
+            
+        </section>
+
+        <!-- CT TARAFI -->
+        <h2 class="section-title" style="color: #4da6ff;">CT Tarafı Taktikleri</h2>
+        <div id="ct-grid" class="lineup-grid" style="margin-bottom: 4rem;">
+            <!-- Burası otomatik dolacak -->
+        </div>
+
+        <!-- T TARAFI -->
+        <h2 class="section-title" style="color: #ffcc00;">T Tarafı Taktikleri</h2>
+        <div id="t-grid" class="lineup-grid">
+            <!-- Burası otomatik dolacak -->
+        </div>
+    </main>
+
+    <!-- Lightbox (Tam Ekran Görünüm) -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <span class="lightbox-close">&times;</span>
+        <img id="lightbox-img" src="" alt="Büyük Görsel" onclick="toggleZoom(event)">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const lightboxCap = document.getElementById('lightbox-caption');
+
+        // Lightbox tıklandığında büyütme
+        function bindLightboxEvents() {
+            document.querySelectorAll('.image-wrapper img').forEach(img => {
+                img.onclick = () => {
+                    lightboxImg.src = img.src;
+                    lightboxImg.classList.remove('zoomed');
+                    lightboxCap.innerText = img.alt;
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                };
+            });
+        }
+
+        function closeLightbox(e) {
+            if (e.target.id === 'lightbox' || e.target.className === 'lightbox-close') {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function toggleZoom(e) {
+            e.stopPropagation();
+            lightboxImg.classList.toggle('zoomed');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Sayfa açıldığında Mirage taktiklerini çek ve bas
+        window.onload = () => {
+             if (typeof renderLineups === 'function') {
+                renderLineups('mirage');
+                bindLightboxEvents();
+             }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CS2 Hızlı Lineup Ekleyici</title>
+    <style>
+        :root {
+            --bg-color: #0f1115;
+            --card-bg: #1a1d24;
+            --primary: #ff4655;
+            --primary-hover: #e03e4d;
+            --text-main: #ece8e1;
+            --text-muted: #8b92a5;
+            --border: #2a2e38;
+            --smoke: #95a5a6;
+            --flash: #f1c40f;
+            --molotov: #e74c3c;
+            --he: #2ecc71;
+            --ct-color: #3498db;
+            --t-color: #f39c12;
+            --success: #2ecc71;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: var(--primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .panel {
+            background: var(--card-bg);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--bg-color);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 1rem;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        button:hover {
+            background: var(--primary-hover);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        button.secondary {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        button.secondary:hover {
+            background: var(--border);
+        }
+        
+        button.success {
+            background: var(--success);
+            margin-top: 1rem;
+        }
+        
+        button.success:hover {
+            background: #27ae60;
+        }
+
+        .table-container {
+            margin-top: 2rem;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border);
+            text-align: left;
+        }
+
+        th {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            padding: 0.4rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            width: auto;
+        }
+        
+        .code-output {
+            background: var(--bg-color);
+            padding: 1rem;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--success);
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .badge {
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>CS2 Hızlı Veri Ekleme Paneli ⚡</h1>
+    <p style="text-align: center; color: var(--text-muted); margin-bottom: 2rem;">100'lerce lineup'ı saniyeler içinde ekleyin ve tek tuşla JSON çıktısını alın.</p>
+
+    <div class="container">
+        <!-- Sol Panel: Form -->
+        <div class="panel">
+            <h2>Yeni Taktik Ekle</h2>
+            <form id="addForm">
+                <div class="row">
+                    <div class="form-group">
+                        <label>Harita</label>
+                        <select id="mapSel" required>
+                            <option value="mirage">Mirage</option>
+                            <option value="d2">Dust 2</option>
+                            <option value="inferno">Inferno</option>
+                            <option value="anubis">Anubis</option>
+                            <option value="ancient">Ancient</option>
+                            <option value="nuke">Nuke</option>
+                            <option value="overpass">Overpass</option>
+                            <option value="vertigo">Vertigo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Takım</label>
+                        <select id="teamSel" required>
+                            <option value="t">T (Terörist)</option>
+                            <option value="ct">CT (Anti-Terörist)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Bomba Türü</label>
+                        <select id="typeSel" required>
+                            <option value="smoke">Sis (Smoke)</option>
+                            <option value="flash">Flaş (Flashbang)</option>
+                            <option value="molotov">Molotof / Yanıcı</option>
+                            <option value="he">El Bombası (HE)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Başlık (Örn: T Ramp Smoke)</label>
+                        <input type="text" id="titleIn" required placeholder="Taktik Adı">
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label>Hedef (Nereye Düşüyor?)</label>
+                        <input type="text" id="targetIn" required placeholder="Örn: CT Spawn">
+                    </div>
+                    <div class="form-group">
+                        <label>Nereden (Atış Noktası)</label>
+                        <input type="text" id="fromIn" required placeholder="Örn: T Base">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Teknik (Atış Şekli)</label>
+                    <select id="techSel" required>
+                        <option value="Jumpthrow">Jumpthrow</option>
+                        <option value="Sol Tık (Düz)">Sol Tık (Düz)</option>
+                        <option value="Sağ Tık (Yakın)">Sağ Tık (Yakın)</option>
+                        <option value="Sol+Sağ Tık (Orta)">Sol+Sağ Tık (Orta)</option>
+                        <option value="W + Jumpthrow">W + Jumpthrow</option>
+                        <option value="Koşarak Sol Tık">Koşarak Sol Tık</option>
+                        <option value="Shift Walk Sol Tık">Shift Walk Sol Tık</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Görsel İsimleri (Her satıra bir tane) <br><small style="color:var(--text-muted);font-weight:400;">Örn: mirage/t/smoke_ct_1.webp</small></label>
+                    <textarea id="imagesIn" rows="3" required placeholder="mirage/t/smoke_1.webp&#10;mirage/t/smoke_2.webp"></textarea>
+                </div>
+
+                <button type="submit">Listeye Ekle (Enter)</button>
+                <div style="display:flex; gap: 10px; margin-top:10px;">
+                    <button type="button" class="secondary" onclick="generateAutoImages()">🖼️ Örnek Görsel Yolu Üret</button>
+                    <button type="button" class="secondary" onclick="clearForm()">🧹 Formu Temizle</button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Sağ Panel: Liste ve Çıktı -->
+        <div class="panel">
+            <h2>Eklenenler Kutusu (<span id="countDisplay">0</span>)</h2>
+            <div class="table-container" style="max-height: 300px; margin-bottom: 1rem;">
+                <table id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>Harita</th>
+                            <th>Taraf</th>
+                            <th>Tür</th>
+                            <th>İsim</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody">
+                        <!-- Satırlar buraya eklenecek -->
+                    </tbody>
+                </table>
+            </div>
+
+            <button class="success" onclick="generateJSON()">✨ lineups.js Kodunu Oluştur</button>
+            <button class="secondary" style="margin-top:10px" onclick="copyToClipboard()">📋 Kodu Kopyala</button>
+
+            <div style="margin-top:1rem;">
+                <label>Sonuç JSON Kodu (Bunu lineups.js'e yapıştırın)</label>
+                <div id="jsonOutput" class="code-output">// Lütfen önce taktik ekleyip "Kodunu Oluştur" butonuna basın.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Veriyi localStorage'da tutarak sayfa yenilenmesinde kaybolmayı önleyelim
+        let lineupsData = JSON.parse(localStorage.getItem('cs2_lineups')) || [];
+
+        function updateTable() {
+            const tbody = document.getElementById('tableBody');
+            tbody.innerHTML = '';
+            
+            lineupsData.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.map}</td>
+                    <td><span class="badge" style="background:var(--${item.team}-color)">${item.team.toUpperCase()}</span></td>
+                    <td>${item.type}</td>
+                    <td>${item.title}</td>
+                    <td class="action-btns">
+                        <button class="icon-btn secondary" onclick="duplicateItem(${index})" title="Aynı ayarlarla çoğalt">👯 Çoğalt</button>
+                        <button class="icon-btn" style="background:#e74c3c" onclick="deleteItem(${index})">Sil</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+            
+            document.getElementById('countDisplay').innerText = lineupsData.length;
+            localStorage.setItem('cs2_lineups', JSON.stringify(lineupsData));
+        }
+
+        document.getElementById('addForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const imagesText = document.getElementById('imagesIn').value;
+            const imagesArray = imagesText.split('\\n').map(s => s.trim()).filter(s => s !== '');
+
+            const newItem = {
+                map: document.getElementById('mapSel').value,
+                team: document.getElementById('teamSel').value,
+                type: document.getElementById('typeSel').value,
+                title: document.getElementById('titleIn').value,
+                target: document.getElementById('targetIn').value,
+                from: document.getElementById('fromIn').value,
+                tech: document.getElementById('techSel').value,
+                images: imagesArray
+            };
+
+            lineupsData.push(newItem);
+            updateTable();
+            
+            // Kullanım kolaylığı için Target ve Başlığı sıfırla, diğerleri aynı kalsın ki hızlı eklensin
+            document.getElementById('titleIn').value = '';
+            document.getElementById('targetIn').value = '';
+            document.getElementById('titleIn').focus();
+        });
+
+        function duplicateItem(index) {
+            const item = lineupsData[index];
+            document.getElementById('mapSel').value = item.map;
+            document.getElementById('teamSel').value = item.team;
+            document.getElementById('typeSel').value = item.type;
+            document.getElementById('titleIn').value = item.title + " (Kopya)";
+            document.getElementById('targetIn').value = item.target;
+            document.getElementById('fromIn').value = item.from;
+            document.getElementById('techSel').value = item.tech;
+            document.getElementById('imagesIn').value = item.images.join('\\n');
+        }
+
+        function deleteItem(index) {
+            lineupsData.splice(index, 1);
+            updateTable();
+        }
+
+        function clearForm() {
+            document.getElementById('addForm').reset();
+        }
+        
+        function generateAutoImages() {
+            const map = document.getElementById('mapSel').value;
+            const team = document.getElementById('teamSel').value;
+            const type = document.getElementById('typeSel').value;
+            const target = document.getElementById('targetIn').value.replace(/\\s+/g, '').toLowerCase() || 'hedef';
+            
+            const path1 = `${map}/${team}/${type}_${target}_1.webp`;
+            const path2 = `${map}/${team}/${type}_${target}_2.webp`;
+            
+            document.getElementById('imagesIn').value = `${path1}\\n${path2}`;
+        }
+
+        function generateJSON() {
+            // Veriyi lineups.js'in beklediği formata dönüştür
+            const outputObj = {};
+            
+            lineupsData.forEach(item => {
+                if (!outputObj[item.map]) {
+                    outputObj[item.map] = { ct: [], t: [] };
+                }
+                
+                outputObj[item.map][item.team].push({
+                    type: item.type,
+                    title: item.title,
+                    target: item.target,
+                    from: item.from,
+                    tech: item.tech,
+                    images: item.images
+                });
+            });
+
+            let jsContent = `/**\\n * CS2 Utility Data - Admin Paneli Tarafından Oluşturuldu\\n */\\n\\nconst lineupData = ` + 
+                            JSON.stringify(outputObj, null, 4) + `;\n\n`;
+            
+            jsContent += `/**\\n * Kartları sayfaya basan fonksiyon\\n */\\n`;
+            jsContent += `function renderLineups(mapName) {\\n    const mapData = lineupData[mapName];\\n    if (!mapData) return;\\n\\n    const ctGrid = document.getElementById('ct-grid');\\n    const tGrid = document.getElementById('t-grid');\\n\\n    if (ctGrid) {\\n        ctGrid.innerHTML = mapData.ct.length ? mapData.ct.map(createCardHTML).join('') : '<p>Henüz CT taktici yok.</p>';\\n    }\\n    if (tGrid) {\\n        tGrid.innerHTML = mapData.t.length ? mapData.t.map(createCardHTML).join('') : '<p>Henüz T taktici yok.</p>';\\n    }\\n\\n    if (typeof bindLightboxEvents === 'function') {\\n        bindLightboxEvents();\\n    }\\n}\\n\\n`;
+            jsContent += `function createCardHTML(lineup) {\\n    const imagesHTML = lineup.images.map((img, index) => \`\\n        <div class="image-wrapper">\\n            <img src="\${img}" alt="\${lineup.title} - Görsel \${index + 1}" loading="lazy">\\n            <span class="image-label">Görüntü \${index + 1}</span>\\n        </div>\\n    \`).join('');\\n\\n    return \`\\n        <details class="lineup-card">\\n            <summary class="lineup-header">\\n                <div class="header-left">\\n                    <span class="utility-type \${lineup.type}">\${lineup.type}</span>\\n                    <h3>\${lineup.title}</h3>\\n                </div>\\n                <span class="toggle-icon">▼</span>\\n            </summary>\\n            \\n            <div class="lineup-content">\\n                <div class="lineup-details">\\n                    <p><strong>Hedef:</strong> \${lineup.target}</p>\\n                    <p><strong>Nereden:</strong> \${lineup.from}</p>\\n                    <p><strong>Teknik:</strong> \${lineup.tech}</p>\\n                </div>\\n                <div class="lineup-images">\\n                    \${imagesHTML}\\n                </div>\\n            </div>\\n        </details>\\n    \`;\\n}`;
+
+            document.getElementById('jsonOutput').innerText = jsContent;
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('jsonOutput').innerText;
+            if (content.includes("Lütfen önce taktik ekleyip")) {
+                alert("Önce kod oluşturun!");
+                return;
+            }
+            navigator.clipboard.writeText(content).then(() => {
+                const btn = document.querySelector('button[onclick="copyToClipboard()"]');
+                btn.innerText = "✅ Kopyalandı!";
+                setTimeout(() => { btn.innerText = "📋 Kodu Kopyala"; }, 2000);
+            });
+        }
+
+        // Başlangıçta tabloyu yükle
+        updateTable();
+    </script>
+</body>
+</html>
