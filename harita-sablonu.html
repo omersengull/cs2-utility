@@ -85,7 +85,9 @@
     <!-- Lightbox (Tam Ekran Görünüm) -->
     <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
         <span class="lightbox-close">&times;</span>
+        <button id="lightbox-prev" class="lightbox-nav lightbox-prev" onclick="prevLightboxImage(event)">&#10094;</button>
         <img id="lightbox-img" src="" alt="Büyük Görsel" onclick="toggleZoom(event)">
+        <button id="lightbox-next" class="lightbox-nav lightbox-next" onclick="nextLightboxImage(event)">&#10095;</button>
         <div id="lightbox-caption" class="lightbox-caption"></div>
     </div>
 
@@ -94,17 +96,51 @@
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightbox-img');
         const lightboxCap = document.getElementById('lightbox-caption');
+        const lightboxPrev = document.getElementById('lightbox-prev');
+        const lightboxNext = document.getElementById('lightbox-next');
+
+        let currentImageArray = [];
+        let currentImageIndex = 0;
+
+        function showLightboxImage() {
+            if (currentImageArray.length === 0) return;
+            const img = currentImageArray[currentImageIndex];
+            lightboxImg.src = img.src;
+            lightboxImg.classList.remove('zoomed');
+            lightboxCap.innerText = img.alt;
+            
+            // Eğer birden fazla resim varsa butonları göster
+            lightboxPrev.style.display = currentImageArray.length > 1 ? 'block' : 'none';
+            lightboxNext.style.display = currentImageArray.length > 1 ? 'block' : 'none';
+        }
 
         // Sayfadaki tüm resimlere tıklama dinleyicisi ekle
-        document.querySelectorAll('.image-wrapper img').forEach(img => {
-            img.onclick = () => {
-                lightboxImg.src = img.src;
-                lightboxImg.classList.remove('zoomed');
-                lightboxCap.innerText = img.alt;
-                lightbox.classList.add('active');
-                document.body.style.overflow = 'hidden';
-            };
+        document.querySelectorAll('.lineup-card').forEach(card => {
+            const images = Array.from(card.querySelectorAll('.image-wrapper img'));
+            images.forEach((img, index) => {
+                img.onclick = () => {
+                    currentImageArray = images;
+                    currentImageIndex = index;
+                    showLightboxImage();
+                    lightbox.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                };
+            });
         });
+
+        function nextLightboxImage(e) {
+            if (e) e.stopPropagation();
+            if (currentImageArray.length <= 1) return;
+            currentImageIndex = (currentImageIndex + 1) % currentImageArray.length;
+            showLightboxImage();
+        }
+
+        function prevLightboxImage(e) {
+            if (e) e.stopPropagation();
+            if (currentImageArray.length <= 1) return;
+            currentImageIndex = (currentImageIndex - 1 + currentImageArray.length) % currentImageArray.length;
+            showLightboxImage();
+        }
 
         function closeLightbox(e) {
             if (e.target.id === 'lightbox' || e.target.className === 'lightbox-close') {
@@ -119,9 +155,14 @@
         }
 
         document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+            if (!lightbox.classList.contains('active')) return;
+            if (e.key === 'Escape') {
                 lightbox.classList.remove('active');
                 document.body.style.overflow = 'auto';
+            } else if (e.key === 'ArrowRight') {
+                nextLightboxImage();
+            } else if (e.key === 'ArrowLeft') {
+                prevLightboxImage();
             }
         });
     </script>

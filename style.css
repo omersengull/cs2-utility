@@ -378,6 +378,37 @@ details.lineup-card[open] .toggle-icon {
     user-select: none;
 }
 
+/* Lightbox Gezinme Butonları */
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    font-size: 2rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    z-index: 1001;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
+    user-select: none;
+    display: none; /* Varsayılan olarak kapalı, JS kontrol edecek */
+}
+
+.lightbox-nav:hover {
+    background: var(--primary);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.lightbox-prev {
+    left: 30px;
+}
+
+.lightbox-next {
+    right: 30px;
+}
+
 .lightbox-caption {
     color: var(--text-main);
     margin-top: 1rem;
@@ -403,4 +434,7 @@ details.lineup-card[open] .toggle-icon {
     .map-grid { grid-template-columns: 1fr; }
     .lineup-grid { grid-template-columns: 1fr; }
     .lineup-images { flex-direction: column; }
+    .lightbox-nav { font-size: 1.5rem; padding: 0.4rem 0.8rem; }
+    .lightbox-prev { left: 10px; }
+    .lightbox-next { right: 10px; }
 }
