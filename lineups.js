@@ -382,19 +382,8 @@ const lineupData = {
                     "mirage/t/windowfromtopmid.webp",
                     "mirage/t/windowfromtopmid2.webp"
                 ]
-            },
-            {
-                "type": "smoke",
-                "title": "B Apps'den Fake Window Smoke",
-                "target": "Window",
-                "from": "B Apps",
-                "tech": "Sol Tık (Düz)",
-                "images": [
-                    "mirage/t/windowfrombapps.webp",
-                    "mirage/t/windowfrombapps2.webp",
-                    "mirage/t/windowfrombapps3.webp"
-                ]
             }
+           
         ]
     }
 };
